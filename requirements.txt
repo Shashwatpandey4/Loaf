@@ -1,0 +1,16 @@
+# Food KB Answerer - Dependencies
+# Core dependencies
+pydantic>=2.0.0
+ollama>=0.6.0
+
+# Web scraping and parsing
+requests>=2.25.0
+beautifulsoup4>=4.9.0
+lxml>=4.6.0
+
+# Recipe detection
+extruct>=0.18.0
+html5lib>=1.1
+
+# Optional: For better HTML parsing
+html-text>=0.7.0
