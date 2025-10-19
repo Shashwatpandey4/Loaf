@@ -2,10 +2,10 @@
 Minimal knowledge base with sample recipes for the food KB answerer.
 """
 
-from contracts import Ingredient, Recipe
+from src.models.contracts import Ingredient, Recipe
 
 # Sample recipes for the knowledge base
-SAMPLE_RECIPES = [
+RECIPES = [
     Recipe(
         id="spicy_noodles_001",
         name="Spicy Sichuan Noodles",
@@ -164,7 +164,7 @@ SAMPLE_RECIPES = [
             Ingredient(name="mixed vegetables", amount="300", unit="g"),
             Ingredient(name="chicken breast", amount="200", unit="g"),
             Ingredient(name="fish sauce", amount="2", unit="tbsp"),
-            Ingredient(name="brown sugar", amount="1", unit="tbsp"),
+            Ingredient(name="brown sugar", amount="5", unit="tbsp"),
             Ingredient(name="kaffir lime leaves", amount="4", unit="leaves"),
             Ingredient(name="thai basil", amount="1/4", unit="cup"),
             Ingredient(name="jasmine rice", amount="1", unit="cup"),
@@ -191,12 +191,12 @@ SAMPLE_RECIPES = [
 
 def get_all_recipes() -> list[Recipe]:
     """Get all recipes from the knowledge base."""
-    return SAMPLE_RECIPES
+    return RECIPES
 
 
 def get_recipe_by_id(recipe_id: str) -> Recipe | None:
     """Get a specific recipe by ID."""
-    for recipe in SAMPLE_RECIPES:
+    for recipe in RECIPES:
         if recipe.id == recipe_id:
             return recipe
     return None
@@ -205,7 +205,7 @@ def get_recipe_by_id(recipe_id: str) -> Recipe | None:
 def search_recipes_by_tags(tags: list[str]) -> list[Recipe]:
     """Search recipes by tags."""
     matching_recipes = []
-    for recipe in SAMPLE_RECIPES:
+    for recipe in RECIPES:
         if any(tag.lower() in [t.lower() for t in recipe.tags] for tag in tags):
             matching_recipes.append(recipe)
     return matching_recipes
