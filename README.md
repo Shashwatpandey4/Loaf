@@ -213,3 +213,27 @@ Confidence levels:
 - **Ingredient Parsing**: Extracts amounts, units, and names from ingredient text
 - **Instruction Recognition**: Identifies cooking steps using keyword patterns
 
+## Payment - Stripe Test Cards (Test Mode)
+
+When developing with Stripe in **Test Mode** you should use Stripe's test card numbers — they simulate real card responses without moving real money.
+
+**Common test cards**
+
+- **Successful payment**  
+  `4242 4242 4242 4242` — any future expiry, any 3-digit CVC, any ZIP → **succeeds**
+
+- **Card declined**  
+  `4000 0000 0000 0002` — simulates a card decline
+
+- **3D Secure / SCA required (auth flow)**  
+  `4000 0027 6000 3184` — triggers an authentication flow (useful to test 3D Secure)
+
+**Format rules**
+- **Expiry:** any future month/year (e.g., `12/34`)  
+- **CVC:** any 3 digits (e.g., `123`)  
+- **ZIP/postal:** any 5 digits (if required)
+
+**Notes**
+- Make sure Stripe Dashboard is set to **“View test data”** (Test Mode) when using these cards.  
+- Test cards only work in Test Mode — they are invalid in Live Mode.  
+- Use these cards to test success, declines, and authentication flows during development.
