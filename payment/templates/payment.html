@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Payment Page</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="page-container">
+    <h1>Checkout</h1>
+    <p>Item: Premium Plan</p>
+    <p>Price: $9.99</p>
+
+    <!-- This button will later trigger your Stripe Checkout -->
+    <form action="/success" method="GET">
+      <button type="submit">Pay Now</button>
+    </form>
+
+    <a href="/">← Back to Chat</a>
+  </div>
+</body>
+</html>
