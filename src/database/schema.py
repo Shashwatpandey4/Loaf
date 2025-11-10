@@ -39,5 +39,15 @@ def create_schema(conn: sqlite3.Connection):
         FOREIGN KEY(recipe_id) REFERENCES recipes(id) ON DELETE CASCADE
     )
     """)
+    
+    # Personas table
+    cur.execute("""
+    CREATE TABLE IF NOT EXISTS persona (
+        id TEXT PRIMARY KEY,
+        name TEXT,
+        medical_condition TEXT,
+        dietary_restrictions TEXT
+    )
+                """)
     conn.commit()
     logger.info("Schema created successfully")

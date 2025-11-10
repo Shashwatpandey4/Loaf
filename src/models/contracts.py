@@ -25,6 +25,14 @@ class Ingredient(BaseModel):
     unit: Optional[str] = Field(None, description="Unit of measurement")
 
 
+class Persona(BaseModel):
+    """Persona from knowledge base."""
+
+    id: str = Field(..., description="Unique persona identifier")
+    name: str = Field(..., description="Name of the persona")
+    medical_condition: str = Field(..., description="Medical condition of the persona")
+    dietary_restrictions: str = Field(None, description="Dietary restrictions of the persona")
+
 class Recipe(BaseModel):
     """Structured recipe from knowledge base."""
 

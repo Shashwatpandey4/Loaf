@@ -1,5 +1,6 @@
 from src.models.contracts import Recipe
 from src.database.connection import get_connection
+from src.models.contracts import Persona
 
 def insert_recipe_to_db(recipe: Recipe) -> None:
     conn = get_connection()
@@ -38,5 +39,16 @@ def insert_recipe_to_db(recipe: Recipe) -> None:
         """, (recipe.id, i, step))
 
 
+    conn.commit()
+    conn.close()
+    
+    
+def insert_persona_to_db(persona: Persona) -> None:
+    conn = get_connection()
+    cur = conn.cursor()
+    cur.execute("""
+    INSERT INTO persona (id, name, medical_condition, dietary_restrictions)
+    VALUES (?, ?, ?, ?)
+    """, (persona.id, persona.name, persona.medical_condition, persona.dietary_restrictions))
     conn.commit()
     conn.close()
