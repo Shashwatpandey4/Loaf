@@ -10,7 +10,7 @@ from urllib.parse import quote_plus, urlparse
 import requests
 from bs4 import BeautifulSoup
 
-from contracts import SearchResult, WebSearchResponse
+from models.contracts import SearchResult, WebSearchResponse
 
 
 class DuckDuckGoSearcher:

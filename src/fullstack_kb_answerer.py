@@ -4,7 +4,7 @@ Enhanced KB answerer with recipe detection integration.
 
 from typing import Tuple
 
-from contracts import ConfidenceLevel, EnhancedKBResponse, QueryAnalysis, Recipe
+from models.contracts import ConfidenceLevel, EnhancedKBResponse, QueryAnalysis, Recipe
 from query_processor import QueryProcessor, RecipeMatcher
 from recipe_extraction import RecipeDetector
 from web_search import RecipeWebSearcher
