@@ -6,6 +6,7 @@ from sqlalchemy import create_engine
 from agno.agent import Agent
 from agno.models.openai import OpenAIChat
 from agno.tools.sql import SQLTools
+from knowledge.prompt import SYSTEM_PROMPT
 
 load_dotenv()
 
@@ -43,8 +44,8 @@ def chat_loop():
     # Create agent once for the session
     agent = Agent(
         name="Recipe Agent",
-        model=OpenAIChat(id="gpt-5-nano"),
-        system_message="You are equipped with tools to manage sqlite database",
+        model=OpenAIChat(id="gpt-5-mini"),
+        system_message=SYSTEM_PROMPT,
         tools=[SQLTools(db_engine=engine)],
         markdown=True,
         retries=3
@@ -72,7 +73,7 @@ def chat_loop():
             
             # Query the database (no history maintained)
             print()  # Add spacing
-            agent.print_response(user_input, stream=True)
+            agent.print_response(user_input, stream=False, show_full_reasoning=False)
             print()  # Add spacing after response
             
         except KeyboardInterrupt:
