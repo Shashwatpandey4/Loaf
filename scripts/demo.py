@@ -36,18 +36,61 @@ def query_db(prompt: str):
     print(f"Prompt: {prompt}\n")
     agent.print_response(prompt, stream=True)
 
-if __name__ == "__main__":
-    # First, run all setup steps
-    run_all()
+def chat_loop():
+    """Interactive chat loop that queries the database without maintaining history."""
+    engine = create_engine('sqlite:///knowledge.db')
     
-    # Then check if a prompt was provided as argument
-    if len(sys.argv) > 1:
-        # Join all arguments after script name as the prompt
-        prompt = " ".join(sys.argv[1:])
-        query_db(prompt)
+    # Create agent once for the session
+    agent = Agent(
+        name="Recipe Agent",
+        model=OpenAIChat(id="gpt-5-nano"),
+        system_message="You are equipped with tools to manage sqlite database",
+        tools=[SQLTools(db_engine=engine)],
+        markdown=True,
+        retries=3
+    )
+    
+    print("\n" + "="*50)
+    print("🍞 Recipe Database Chat")
+    print("="*50)
+    print("Ask questions about the database.")
+    print("Type 'exit', 'quit', or 'q' to end.\n")
+    
+    while True:
+        try:
+            # Get user input
+            user_input = input("You: ").strip()
+            
+            # Check for exit commands
+            if user_input.lower() in ['exit', 'quit', 'q']:
+                print("\n👋 Goodbye!")
+                break
+            
+            # Skip empty inputs
+            if not user_input:
+                continue
+            
+            # Query the database (no history maintained)
+            print()  # Add spacing
+            agent.print_response(user_input, stream=True)
+            print()  # Add spacing after response
+            
+        except KeyboardInterrupt:
+            print("\n\n👋 Goodbye!")
+            break
+        except Exception as e:
+            print(f"\n❌ Error: {e}\n")
+            continue
+
+if __name__ == "__main__":
+    # Check if --skip-setup flag is provided
+    skip_setup = "--skip-setup" in sys.argv
+    
+    if not skip_setup:
+        # First, run all setup steps
+        run_all()
     else:
-        print("\n=== Setup complete ===")
-        print("To query the database, run:")
-        print('python -m scripts.demo "Your query here"')
-        print("\nExample:")
-        print('python -m scripts.demo "Give me any recipe with brown sugar"')
+        print("\n=== Skipping setup (using existing database) ===")
+    
+    # Start interactive chat
+    chat_loop()

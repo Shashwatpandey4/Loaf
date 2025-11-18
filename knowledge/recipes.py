@@ -2,7 +2,7 @@
 Minimal knowledge base with sample recipes for the food KB answerer.
 """
 
-from models.contracts import Ingredient, Recipe
+from src.models.contracts import Ingredient, Recipe
 
 # Sample recipes for the knowledge base
 RECIPES = [
