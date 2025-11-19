@@ -7,7 +7,7 @@ from src.models.contracts import Ingredient, Recipe
 # Sample recipes for the knowledge base
 RECIPES = [
     Recipe(
-        id="spicy_noodles_001",
+        id="001",
         name="Spicy Sichuan Noodles",
         description="Traditional Sichuan-style spicy noodles with numbing heat",
         cuisine_type="Chinese",
@@ -43,7 +43,7 @@ RECIPES = [
         spice_level="extra-hot",
     ),
     Recipe(
-        id="mild_ramen_002",
+        id="002",
         name="Miso Ramen",
         description="Comforting Japanese miso ramen with soft-boiled egg",
         cuisine_type="Japanese",
@@ -77,7 +77,7 @@ RECIPES = [
         spice_level="mild",
     ),
     Recipe(
-        id="spicy_pad_thai_003",
+        id="003",
         name="Spicy Pad Thai",
         description="Thai stir-fried noodles with a spicy kick",
         cuisine_type="Thai",
@@ -115,7 +115,7 @@ RECIPES = [
         spice_level="hot",
     ),
     Recipe(
-        id="mild_pasta_004",
+        id="004",
         name="Creamy Mushroom Pasta",
         description="Rich and creamy pasta with wild mushrooms",
         cuisine_type="Italian",
@@ -150,7 +150,7 @@ RECIPES = [
         spice_level="mild",
     ),
     Recipe(
-        id="spicy_curry_005",
+        id="005",
         name="Spicy Thai Green Curry",
         description="Aromatic Thai green curry with vegetables and coconut milk",
         cuisine_type="Thai",
@@ -187,7 +187,7 @@ RECIPES = [
         spice_level="hot",
     ),
     Recipe(
-        id="mild_crepes_006",
+        id="006",
         name="Mushroom Crepes with Vegetarian Sauce",
         description="You can never have too many breakfast recipes, so give Mushroom Crepes with Vegetarian Sauce a try",
         cuisine_type="Mediterranean",
@@ -231,7 +231,7 @@ RECIPES = [
         spice_level="mild",
     ),
     Recipe(
-        id="mild_corned_beef_cabbage_007",
+        id="007",
         name="Slow Cooked Corned Beef and Cabbage",
         description="Slow Cooked Corned Beef and Cabbage could be just the gluten free, dairy free, and whole 30 recipe you've been looking for",
         cuisine_type="European",
@@ -261,7 +261,7 @@ RECIPES = [
         spice_level="mild",
     ),
     Recipe(
-        id="mild_moussaka_008",
+        id="008",
         name="Classic Greek Moussaka",
         description="Classic Greek Moussaka might be just the main course you are searching for",
         cuisine_type="Mediterranean",
@@ -303,7 +303,7 @@ RECIPES = [
         spice_level="mild",
     ),
     Recipe(
-        id="mild_honey_brussels_sprouts_009",
+        id="009",
         name="Honey Dijon Roasted Brussels Sprout",
         description="Honey Dijon Roasted Brussels Sprout is a side dish that serves 4",
         cuisine_type="Unknown",
@@ -329,7 +329,7 @@ RECIPES = [
         spice_level="mild",
     ),
     Recipe(
-        id="mild_cheesy_spinach_shells_010",
+        id="010",
         name="Cheesy Spinach Stuffed Shells",
         description="The recipe Cheesy Spinach Stuffed Shells can be made in about 45 minutes",
         cuisine_type="Unknown",
@@ -368,7 +368,7 @@ RECIPES = [
         spice_level="mild",
     ),
     Recipe(
-        id="mild_coconut_couscous_011",
+        id="011",
         name="Coconut Israeli Couscous Studded With Pomegranate",
         description="Coconut Israeli Couscous Studded With Pomegranate is a side dish that serves 4",
         cuisine_type="Unknown",
@@ -395,7 +395,7 @@ RECIPES = [
         spice_level="mild",
     ),
     Recipe(
-        id="mild_pork_menudo_012",
+        id="012",
         name="Pork Menudo",
         description="The recipe Pork Menudo can be made in approximately 45 minutes",
         cuisine_type="Unknown",
@@ -433,7 +433,7 @@ RECIPES = [
         spice_level="mild",
     ),
     Recipe(
-        id="mild_beet_hummus_013",
+        id="013",
         name="Roasted Beet Hummus",
         description="Roasted Beet Hummus requires roughly 45 minutes from start to finish",
         cuisine_type="Middle Eastern",
@@ -461,7 +461,7 @@ RECIPES = [
         spice_level="mild",
     ),
     Recipe(
-        id="mild_cookies_014",
+        id="014",
         name="Easy Chewy M&M Cookies",
         description="Easy Chewy M&M Cookies requires roughly 45 minutes from start to finish",
         cuisine_type="Unknown",
@@ -490,7 +490,7 @@ RECIPES = [
         spice_level="mild",
     ),
     Recipe(
-        id="mild_maple_apple_cookies_015",
+        id="015",
         name="Maple-Glazed Apple Cookies",
         description="Maple-Glazed Apple Cookies is a lacto ovo vegetarian recipe with 18 servings",
         cuisine_type="Unknown",
@@ -523,7 +523,7 @@ RECIPES = [
         spice_level="mild",
     ),
     Recipe(
-        id="mild_shrimp_stirfry_016",
+        id="016",
         name="Asian Shrimp Stir-Fry",
         description="Asian Shrimp Stir-Fry takes about 45 minutes from beginning to end",
         cuisine_type="Asian",
@@ -560,7 +560,7 @@ RECIPES = [
         spice_level="mild",
     ),
     Recipe(
-        id="mild_broccoli_cheddar_soup_017",
+        id="017",
         name="Broccoli Cheddar Soup, A Panera Bread Co. Copycat",
         description="Broccoli Cheddar Soup, A Panera Bread Co",
         cuisine_type="Unknown",
@@ -596,7 +596,7 @@ RECIPES = [
         spice_level="mild",
     ),
     Recipe(
-        id="mild_tapioca_pudding_018",
+        id="018",
         name="Tapioca Pudding with Pineapple and Coconut",
         description="Tapioca Pudding with Pineapple and Coconut might be a good recipe to expand your dessert recipe box",
         cuisine_type="Unknown",
@@ -627,7 +627,7 @@ RECIPES = [
         spice_level="mild",
     ),
     Recipe(
-        id="mild_peach_pie_019",
+        id="019",
         name="Peach Pie",
         description="Peach Pie might be a good recipe to expand your dessert recipe box",
         cuisine_type="Unknown",
@@ -655,7 +655,7 @@ RECIPES = [
         spice_level="mild",
     ),
     Recipe(
-        id="mild_olive_tapenade_020",
+        id="020",
         name="Olive Tapenade Flatbread",
         description="If you want to add more lacto ovo vegetarian recipes to your recipe box, Olive Tapenade Flatbread might be a recipe you should try",
         cuisine_type="Unknown",
