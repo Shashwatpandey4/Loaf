@@ -5,7 +5,7 @@ Query processing and matching logic for the food KB answerer.
 import re
 from typing import List, Tuple
 
-from models.contracts import QueryAnalysis, Recipe
+from src.models.contracts import QueryAnalysis, Recipe
 from knowledge.recipes import get_all_recipes
 
 

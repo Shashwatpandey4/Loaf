@@ -11,7 +11,7 @@ import extruct
 import requests
 from bs4 import BeautifulSoup
 
-from models.contracts import (
+from src.models.contracts import (
     ExtractedIngredient,
     ExtractedRecipe,
     RecipeExtractionResponse,

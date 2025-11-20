@@ -14,3 +14,6 @@ html5lib>=1.1
 
 # Optional: For better HTML parsing
 html-text>=0.7.0
+
+# Web search
+exa_py>=2.0.0

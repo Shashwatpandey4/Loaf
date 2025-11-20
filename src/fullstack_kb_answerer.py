@@ -4,10 +4,10 @@ Enhanced KB answerer with recipe detection integration.
 
 from typing import Tuple
 
-from models.contracts import ConfidenceLevel, EnhancedKBResponse, QueryAnalysis, Recipe
-from query_processor import QueryProcessor, RecipeMatcher
-from recipe_extraction import RecipeDetector
-from web_search import RecipeWebSearcher
+from src.models.contracts import ConfidenceLevel, EnhancedKBResponse, QueryAnalysis, Recipe
+from src.query_processor import QueryProcessor, RecipeMatcher
+from src.recipe_extraction import RecipeDetector
+from src.web_search import RecipeWebSearcher
 
 
 class ConfidenceScorer:
@@ -93,8 +93,10 @@ class FullStackKBAnswerer:
         )
 
         # Determine if web search is needed
+        # Search web for NEEDS_WEB, LOW, and MEDIUM confidence matches
+        # Only skip web search for HIGH confidence matches
         needs_web = (
-            confidence_level == ConfidenceLevel.NEEDS_WEB or confidence_score < 0.3
+            confidence_level != ConfidenceLevel.HIGH
         )
 
         # Perform web search if needed and requested

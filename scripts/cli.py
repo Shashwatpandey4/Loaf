@@ -6,9 +6,9 @@ Enhanced CLI interface for the food KB answerer with web search.
 import os
 import sys
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
-from fullstack_kb_answerer import FullStackKBAnswerer
+from src.fullstack_kb_answerer import FullStackKBAnswerer
 
 
 def main():

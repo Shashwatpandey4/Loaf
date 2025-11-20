@@ -227,7 +227,7 @@ RECIPES = [
             "Add spices.Cook for 15 minutes ten add the chopped dill and parsley and cook for another 5 minutes.",
             "Mix last four ingredients and pour sauce over the vegetarian mushroom crepes.",
         ],
-        tags=['morning meal', 'brunch', 'breakfast', 'lacto ovo vegetarian'],
+        tags=["morning meal", "brunch", "breakfast", "lacto ovo vegetarian"],
         spice_level="mild",
     ),
     Recipe(
@@ -257,7 +257,15 @@ RECIPES = [
             "Add the onions, potatoes, carrots, beef and cabbage. Submerge the Bouquet Garni (last four ingredients) in the broth mixture.Cover and cook on LOW for 8 to 9 hours or until the beef is fork-tender.",
             "Remove the Bouquet Garni.",
         ],
-        tags=['lunch', 'main course', 'main dish', 'dinner', 'gluten free', 'dairy free', 'whole 30'],
+        tags=[
+            "lunch",
+            "main course",
+            "main dish",
+            "dinner",
+            "gluten free",
+            "dairy free",
+            "whole 30",
+        ],
         spice_level="mild",
     ),
     Recipe(
@@ -299,7 +307,7 @@ RECIPES = [
             "Place a layer of egg plant, cover with some meat sauce and feta cheese and repeat this until the pan is almost full. Finish with a layer of feta cheese.Top with bchamel sauce.Cover with tin foil and bake in a preheated oven at 180C for 1 hour.",
             "Remove moussaka from the oven and let it set at room temperature 45 minutes before serving.",
         ],
-        tags=['lunch', 'main course', 'main dish', 'dinner'],
+        tags=["lunch", "main course", "main dish", "dinner"],
         spice_level="mild",
     ),
     Recipe(
@@ -325,7 +333,14 @@ RECIPES = [
             "Remove from oven and toss so the brussels sprouts cook evenly.",
             "Place back in the oven and roast for an additional 10 minutes.The outside leaves should be slightly charred and the inside should be tender.",
         ],
-        tags=['side dish', 'gluten free', 'dairy free', 'paleolithic', 'lacto ovo vegetarian', 'primal'],
+        tags=[
+            "side dish",
+            "gluten free",
+            "dairy free",
+            "paleolithic",
+            "lacto ovo vegetarian",
+            "primal",
+        ],
         spice_level="mild",
     ),
     Recipe(
@@ -364,7 +379,7 @@ RECIPES = [
             "Spread spaghetti sauce on top of that. Use a spatula to spread it evenly on the bottom of the pan. Top the sauces with the shells. Use the remaining sauce to top the shells.",
             "Bake in a preheated 350 degree oven, uncovered, for about 30 - 35 minutes or until the sauce is bubbly and serve!",
         ],
-        tags=['side dish', 'lunch', 'main course', 'main dish', 'dinner'],
+        tags=["side dish", "lunch", "main course", "main dish", "dinner"],
         spice_level="mild",
     ),
     Recipe(
@@ -391,7 +406,7 @@ RECIPES = [
             "Add the couscous and simmer on low for 10-12 minutes, until all the liquid absorbs. The couscous should be tender but still with some chew to it.",
             "Stir in the cinnamon, sugar, and pomegranate seeds. I used the seeds from half a pomegranate. If you dont have pomegranate seeds, or dont like them, try substituting raisins or dried cranberries.",
         ],
-        tags=['side dish', 'gluten free', 'lacto ovo vegetarian'],
+        tags=["side dish", "gluten free", "lacto ovo vegetarian"],
         spice_level="mild",
     ),
     Recipe(
@@ -429,7 +444,14 @@ RECIPES = [
             "Add the potatoes, carrots, green peas and raisins (and the rest of the ingredients, if any). Simmer for 15 more minutes stirring occasionally.",
             "Serve with steamed rice.",
         ],
-        tags=['lunch', 'main course', 'main dish', 'dinner', 'gluten free', 'dairy free'],
+        tags=[
+            "lunch",
+            "main course",
+            "main dish",
+            "dinner",
+            "gluten free",
+            "dairy free",
+        ],
         spice_level="mild",
     ),
     Recipe(
@@ -457,7 +479,21 @@ RECIPES = [
             "Add more olive oil as necessary for blending the chickpeas into a paste, or to thin out the hummus to a thinner consistency.",
             "Serve with warm pita or flat bread.",
         ],
-        tags=['antipasti', 'condiment', 'starter', 'snack', 'appetizer', 'dip', 'antipasto', "hor d'oeuvre", 'spread', 'gluten free', 'dairy free', 'lacto ovo vegetarian', 'vegan'],
+        tags=[
+            "antipasti",
+            "condiment",
+            "starter",
+            "snack",
+            "appetizer",
+            "dip",
+            "antipasto",
+            "hor d'oeuvre",
+            "spread",
+            "gluten free",
+            "dairy free",
+            "lacto ovo vegetarian",
+            "vegan",
+        ],
         spice_level="mild",
     ),
     Recipe(
@@ -486,7 +522,7 @@ RECIPES = [
             "Mix until the mixture is well combined and the color has lightened and is smooth and creamy looking.In a small bowl mix together the flour, baking powder, baking soda and salt. With the mixer on low add half the dry mix in until mostly combined then the remaining dry mix. Only mix until it is just barely combined. You are better off leaving a little flour not combined then over mixing it with the electric mixer.Next, using a wooden spoon or rubber spatula stir in the candies.Using a cookie scoop, scoop them onto a parchment lined baking sheet.",
             "Bake for approx 12-14 minutes or until the edges are a light golden brown.",
         ],
-        tags=['dessert'],
+        tags=["dessert"],
         spice_level="mild",
     ),
     Recipe(
@@ -519,7 +555,7 @@ RECIPES = [
             "Add remaining dry ingredients (except apple) and stir just until combined. Gently fold in the apples.  Drop by heaping tablespoons onto a greased baking sheet.",
             "Bake at 400 for about 10-12 min or until tops don't look wet anymore.To make the glaze, whisk together 1 tablespoon melted butter, 1 cup powdered sugar, 1/4 tsp maple flavoring, and 3 tablespoons milk in a small bowl. When the cookies have cooled for a few minutes, drizzle each cookie with glaze.",
         ],
-        tags=['dessert', 'lacto ovo vegetarian'],
+        tags=["dessert", "lacto ovo vegetarian"],
         spice_level="mild",
     ),
     Recipe(
@@ -539,7 +575,9 @@ RECIPES = [
             Ingredient(name="garlic", amount="2.0", unit="cloves"),
             Ingredient(name="ginger root", amount="1.0", unit="inch"),
             Ingredient(name="pepper", amount="0.25", unit="teaspoon"),
-            Ingredient(name="flavor concentrated seafood broth", amount="1.0", unit="packet"),
+            Ingredient(
+                name="flavor concentrated seafood broth", amount="1.0", unit="packet"
+            ),
             Ingredient(name="soy sauce", amount="1.0", unit="tablespoon"),
             Ingredient(name="sugar", amount="1.0", unit="teaspoon"),
             Ingredient(name="water", amount="0.25", unit="cup"),
@@ -556,7 +594,15 @@ RECIPES = [
             "Remove the skillet from the heat and stir in the sesame oil.",
             "Sprinkle the shrimp mixture with the sesame seeds and green onion.",
         ],
-        tags=['lunch', 'main course', 'main dish', 'dinner', 'gluten free', 'dairy free', 'pescatarian'],
+        tags=[
+            "lunch",
+            "main course",
+            "main dish",
+            "dinner",
+            "gluten free",
+            "dairy free",
+            "pescatarian",
+        ],
         spice_level="mild",
     ),
     Recipe(
@@ -592,7 +638,14 @@ RECIPES = [
             "Add the cheese to the soup and whisk over medium heat until melted.",
             "Add up to 3/4 cup water if the soup is too thick.Ladle into the bread bowls and garnish with cheese.",
         ],
-        tags=['soup', 'lunch', 'main course', 'main dish', 'dinner', 'lacto ovo vegetarian'],
+        tags=[
+            "soup",
+            "lunch",
+            "main course",
+            "main dish",
+            "dinner",
+            "lacto ovo vegetarian",
+        ],
         spice_level="mild",
     ),
     Recipe(
@@ -623,7 +676,7 @@ RECIPES = [
             "Place half of the mix in a food processor and blend until smooth.",
             "Transfer this back into the bowl with the rest of the pineapple and stir together  check the flavour and add more honey or lime if you wish.Once your tapioca has chilled, place some of the pineapple mix in the bottom of your serving dishes, then add the tapioca and top with a little pineapple and some lime zest to finish.",
         ],
-        tags=['dessert', 'gluten free', 'lacto ovo vegetarian'],
+        tags=["dessert", "gluten free", "lacto ovo vegetarian"],
         spice_level="mild",
     ),
     Recipe(
@@ -651,7 +704,7 @@ RECIPES = [
             "Add the cut up peaches to the pastry shell, cover with the eggs mixture.",
             "Bake at 350 for 45 minutes, or until the middle is solid firm.",
         ],
-        tags=['dessert', 'lacto ovo vegetarian'],
+        tags=["dessert", "lacto ovo vegetarian"],
         spice_level="mild",
     ),
     Recipe(
@@ -681,9 +734,9 @@ RECIPES = [
             "Place the naan back on the grill and cook until the bottoms get brown and crispy and the cheese melts.Toss the arugula with the balsamic vinegar and add arugula to cooked flatbread.",
             "Drizzle the flatbreads with more olive oil.",
         ],
-        tags=['lacto ovo vegetarian'],
+        tags=["lacto ovo vegetarian"],
         spice_level="mild",
-    )
+    ),
 ]
 
 

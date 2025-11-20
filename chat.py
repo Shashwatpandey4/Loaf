@@ -7,14 +7,12 @@ Provides a conversational interface to chat with the recipe model.
 import os
 import sys
 
-# Add project root to path for knowledge module
+# Add project root to path for all modules
 sys.path.insert(0, os.path.dirname(__file__))
-# Add src to path for src modules
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "src"))
 
 import time
 
-from fullstack_kb_answerer import FullStackKBAnswerer
+from src.fullstack_kb_answerer import FullStackKBAnswerer
 
 
 class RecipeChatBot:
