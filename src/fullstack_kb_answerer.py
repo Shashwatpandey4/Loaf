@@ -3,6 +3,8 @@ Enhanced KB answerer with recipe detection integration.
 """
 
 from typing import Tuple
+from datetime import datetime, timedelta
+from collections import defaultdict
 
 from src.models.contracts import ConfidenceLevel, EnhancedKBResponse, QueryAnalysis, Recipe
 from src.query_processor import QueryProcessor, RecipeMatcher
@@ -113,7 +115,7 @@ class FullStackKBAnswerer:
                 and web_search_results.search_results
             ):
                 print(
-                    f"🔍 Extracting recipes from {len(web_search_results.search_results)} URLs..."
+                    f"Extracting recipes from {len(web_search_results.search_results)} URLs..."
                 )
 
                 urls = [result.url for result in web_search_results.search_results]
@@ -126,7 +128,7 @@ class FullStackKBAnswerer:
                     if result.success and result.recipe
                 ]
 
-                print(f"✅ Successfully extracted {len(extracted_recipes)} recipes")
+                print(f"Successfully extracted {len(extracted_recipes)} recipes")
 
         return EnhancedKBResponse(
             query=query,
@@ -237,3 +239,91 @@ class FullStackKBAnswerer:
     def extract_recipe_from_url(self, url: str):
         """Extract recipe from a specific URL."""
         return self.recipe_detector.extract_recipe(url)
+
+    def schedule_grocery_event(
+        self,
+        plan: dict,
+        recipes_map: dict,
+        grocery_date: datetime,
+        time_str: str = "10:00",
+        credentials_path: str = "credentials.json",
+        token_path: str = "token.json",
+        timezone: str = "UTC",
+        dry_run: bool = False,
+    ) -> list[str] | dict:
+        """Aggregate groceries from the 7-day plan and create a calendar event.
+
+        Returns event payloads in dry-run mode or created event links when not.
+        """
+        # Aggregate ingredients
+        agg: dict[str, list[tuple[str, str]]] = defaultdict(list)
+        for day_key in [f"day_{i+1}" for i in range(7)]:
+            recipe_name = plan.get(day_key)
+            recipe = recipes_map.get(recipe_name)
+            if not recipe:
+                continue
+            for ing in getattr(recipe, "ingredients", []):
+                name = ing.name.strip()
+                amount = ing.amount if getattr(ing, "amount", None) is not None else ""
+                unit = ing.unit if getattr(ing, "unit", None) else ""
+                agg[name].append((str(amount), str(unit)))
+
+        # Build grocery lines, try to sum simple numeric amounts with same unit
+        def try_sum(entries: list[tuple[str, str]]) -> str:
+            # Group by unit
+            grouped: dict[str, list[float]] = defaultdict(list)
+            others: list[str] = []
+            for amt, unit in entries:
+                try:
+                    val = float(str(amt))
+                    grouped[unit].append(val)
+                except Exception:
+                    others.append(f"{amt} {unit}".strip())
+
+            parts: list[str] = []
+            for unit, vals in grouped.items():
+                total = sum(vals)
+                parts.append(f"{total:g} {unit}".strip())
+            parts.extend(others)
+            return "; ".join(parts) if parts else ""
+
+        grocery_lines: list[str] = []
+        for name, entries in agg.items():
+            amt_str = try_sum(entries)
+            if amt_str:
+                grocery_lines.append(f"- {amt_str} {name}")
+            else:
+                grocery_lines.append(f"- {name}")
+
+        description = "Grocery list for 7-day meal plan:\n\n" + "\n".join(grocery_lines)
+
+        hour, minute = map(int, time_str.split(":"))
+        start_dt = datetime.fromisoformat(grocery_date.isoformat() if isinstance(grocery_date, datetime) else grocery_date)
+        start_dt = start_dt.replace(hour=hour, minute=minute)
+
+        if dry_run:
+            event = {
+                "summary": "Grocery list: Weekly meal plan",
+                "description": description,
+                "start": {"dateTime": start_dt.isoformat(), "timeZone": timezone},
+                "end": {"dateTime": (start_dt + timedelta(minutes=30)).isoformat(), "timeZone": timezone},
+            }
+            return event
+
+        try:
+            from calendar_agent.google_calendar import get_credentials, create_event_from_details
+        except Exception as e:
+            raise RuntimeError("Calendar integration not available: " + str(e))
+
+        creds = get_credentials(client_secrets_file=credentials_path, token_file=token_path)
+
+        created = create_event_from_details(
+            credentials=creds,
+            title="Grocery list: Weekly meal plan",
+            start_dt=start_dt,
+            duration_minutes=30,
+            description=description,
+            timezone=timezone,
+        )
+
+        return [created.get("htmlLink")]
