@@ -143,6 +143,87 @@ class FullStackKBAnswerer:
         """Get all available recipes in the knowledge base."""
         return self.recipe_matcher.recipes
 
+    def schedule_meal_plan(
+        self,
+        plan: dict,
+        recipes_map: dict,
+        start_date: datetime,
+        time_str: str = "18:00",
+        credentials_path: str = "credentials.json",
+        token_path: str = "token.json",
+        timezone: str = "UTC",
+        dry_run: bool = False,
+    ) -> list[str]:
+        """Schedule a 7-day meal plan to Google Calendar and return event links.
+
+        This method requires the `calendar_agent` package and Google API
+        dependencies installed. It will raise a RuntimeError if calendar
+        integration is not available.
+        """
+        try:
+            from calendar_agent.google_calendar import get_credentials, create_event_from_details
+        except Exception as e:
+            raise RuntimeError("Calendar integration not available: " + str(e))
+
+        hour, minute = map(int, time_str.split(":"))
+
+        if dry_run:
+            # Build event payloads but do not call Google APIs
+            events: list[dict] = []
+            for i in range(7):
+                day_key = f"day_{i+1}"
+                recipe_name = plan.get(day_key)
+                recipe = recipes_map.get(recipe_name)
+
+                start_dt = datetime.fromisoformat(start_date.isoformat() if isinstance(start_date, datetime) else start_date)
+                start_dt = start_dt.replace(hour=hour, minute=minute) + timedelta(days=i)
+                end_dt = start_dt + timedelta(minutes=(int(str(getattr(recipe, "prep_time", "0")).split()[0]) if recipe and getattr(recipe, "prep_time", None) else 60))
+
+                description = getattr(recipe, "description", "") if recipe else ""
+
+                event = {
+                    "summary": f"Meal: {recipe_name}",
+                    "description": description,
+                    "start": {"dateTime": start_dt.isoformat(), "timeZone": timezone},
+                    "end": {"dateTime": end_dt.isoformat(), "timeZone": timezone},
+                }
+                events.append(event)
+
+            return events
+
+        creds = get_credentials(client_secrets_file=credentials_path, token_file=token_path)
+
+        created_links: list[str] = []
+        for i in range(7):
+            day_key = f"day_{i+1}"
+            recipe_name = plan.get(day_key)
+            recipe = recipes_map.get(recipe_name)
+
+            start_dt = datetime.fromisoformat(start_date.isoformat() if isinstance(start_date, datetime) else start_date)
+            start_dt = start_dt.replace(hour=hour, minute=minute) + timedelta(days=i)
+
+            description = ""
+            duration = 60
+            if recipe:
+                description = getattr(recipe, "description", "") or ""
+                try:
+                    duration = int(str(getattr(recipe, "prep_time", "0")).split()[0]) + int(str(getattr(recipe, "cook_time", "0")).split()[0])
+                except Exception:
+                    duration = 60
+
+            created = create_event_from_details(
+                credentials=creds,
+                title=f"Meal: {recipe_name}",
+                start_dt=start_dt,
+                duration_minutes=duration,
+                description=description,
+                timezone=timezone,
+            )
+
+            created_links.append(created.get("htmlLink"))
+
+        return created_links
+
     def search_by_tags(self, tags: list[str]) -> list[Recipe]:
         """Search recipes by specific tags."""
         matching_recipes = []

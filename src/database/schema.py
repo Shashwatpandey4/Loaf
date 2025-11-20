@@ -15,7 +15,8 @@ def create_schema(conn: sqlite3.Connection):
         prep_time TEXT,
         cook_time TEXT,
         servings INTEGER,
-        spice_level TEXT
+        spice_level TEXT,
+        nutrition_info TEXT
     )
     """)
     # Ingredients table
