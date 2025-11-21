@@ -1,5 +1,5 @@
 {
-  "2025-11-21": {
+  "2025-11-20": {
     "day_1": {
       "recipe": "Spicy Sichuan Noodles",
       "reason": "High protein, vegetarian option"
@@ -17,8 +17,8 @@
       "reason": "Vegetarian comfort food"
     },
     "day_5": {
-      "recipe": "Tiramisù",
-      "reason": "Classic Italian dessert for a treat"
+      "recipe": "Finnish Salmon Soup",
+      "reason": "Good for the winter"
     },
     "day_6": {
       "recipe": "Spicy Thai Green Curry",
@@ -27,16 +27,6 @@
     "day_7": {
       "recipe": "Mushroom Crepes with Vegetarian Sauce",
       "reason": "Brunch-style meal"
-    }
-  },
-  "2025-11-20": {
-    "day_1": {
-      "recipe": "Spicy Sichuan Noodles",
-      "reason": "High protein, vegetarian option"
-    },
-    "day_3": {
-      "recipe": "Miso Ramen",
-      "reason": "Comfort food, easy to make"
     }
   }
 }
