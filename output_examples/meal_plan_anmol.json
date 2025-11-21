@@ -1,0 +1,31 @@
+{
+    "Day 1": {
+      "recipe": "Roasted Beet Hummus",
+      "reason": "vegetarian and no added sugar; suitable for diabetes"
+    },
+    "Day 2": {
+      "recipe": "Creamy Mushroom Pasta",
+      "reason": "vegetarian and no added sugar; suitable for diabetes"
+    },
+    "Day 3": {
+      "recipe": "Honey Dijon Roasted Brussels Sprout",
+      "reason": "vegetarian; 2 tbsp honey (<=3 tbsp) so diabetes-friendly"
+    },
+    "Day 4": {
+      "recipe": "Coconut Israeli Couscous Studded With Pomegranate",
+      "reason": "vegetarian; 1 tbsp sugar (<=3 tbsp) for diabetes"
+    },
+    "Day 5": {
+      "recipe": "Olive Tapenade Flatbread",
+      "reason": "vegetarian and no added sugar; suitable for diabetes"
+    },
+    "Day 6": {
+      "recipe": "Dosa",
+      "reason": "user-specified recipe"
+    },
+    "Day 7": {
+      "recipe": "Spicy Sichuan Noodles",
+      "reason": "vegetarian and no added sugar; suitable for diabetes"
+    }
+  }
+  
