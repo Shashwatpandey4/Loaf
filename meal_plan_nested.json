@@ -1,0 +1,42 @@
+{
+  "2025-11-21": {
+    "day_1": {
+      "recipe": "Spicy Sichuan Noodles",
+      "reason": "High protein, vegetarian option"
+    },
+    "day_2": {
+      "recipe": "Miso Ramen",
+      "reason": "Comfort food, easy to make"
+    },
+    "day_3": {
+      "recipe": "Spicy Pad Thai",
+      "reason": "Flavorful and satisfying"
+    },
+    "day_4": {
+      "recipe": "Creamy Mushroom Pasta",
+      "reason": "Vegetarian comfort food"
+    },
+    "day_5": {
+      "recipe": "Tiramisù",
+      "reason": "Classic Italian dessert for a treat"
+    },
+    "day_6": {
+      "recipe": "Spicy Thai Green Curry",
+      "reason": "Aromatic and spicy"
+    },
+    "day_7": {
+      "recipe": "Mushroom Crepes with Vegetarian Sauce",
+      "reason": "Brunch-style meal"
+    }
+  },
+  "2025-11-20": {
+    "day_1": {
+      "recipe": "Spicy Sichuan Noodles",
+      "reason": "High protein, vegetarian option"
+    },
+    "day_3": {
+      "recipe": "Miso Ramen",
+      "reason": "Comfort food, easy to make"
+    }
+  }
+}
