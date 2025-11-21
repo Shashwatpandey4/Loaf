@@ -44,7 +44,7 @@ def chat_loop():
     # Create agent once for the session
     agent = Agent(
         name="Recipe Agent",
-        model=OpenAIChat(id="gpt-5-mini"),
+        model=OpenAIChat(id="gpt-5"),
         system_message=SYSTEM_PROMPT,
         tools=[SQLTools(db_engine=engine)],
         markdown=True,
