@@ -25,7 +25,7 @@ class RecipeChatBot:
 
     def print_welcome(self):
         """Print welcome message and instructions."""
-        print("🍜 Welcome to Recipe Chat Bot!")
+        print("Welcome to Recipe Chat Bot!")
         print("=" * 50)
         print("I can help you find recipes, cooking tips, and food suggestions.")
         print("Just ask me anything about food and cooking!")
@@ -46,7 +46,7 @@ class RecipeChatBot:
 
     def print_help(self):
         """Print help information."""
-        print("\n📖 Help - Recipe Chat Bot")
+        print("\nHelp - Recipe Chat Bot")
         print("-" * 30)
         print("Ask me about:")
         print("• Specific recipes (e.g., 'spicy noodles')")
@@ -61,7 +61,7 @@ class RecipeChatBot:
     def show_available_recipes(self):
         """Show all available recipes in the knowledge base."""
         recipes = self.kb.get_available_recipes()
-        print(f"\n📚 Available Recipes ({len(recipes)} total)")
+        print(f"\nAvailable Recipes ({len(recipes)} total)")
         print("-" * 40)
 
         for i, recipe in enumerate(recipes, 1):
@@ -76,7 +76,7 @@ class RecipeChatBot:
     def show_session_stats(self):
         """Show session statistics."""
         session_time = time.time() - self.session_start_time
-        print("\n📊 Session Statistics")
+        print("\nSession Statistics")
         print("-" * 25)
         print(f"Session Duration: {session_time:.1f} seconds")
         print(f"Queries Asked: {len(self.conversation_history)}")
@@ -86,7 +86,7 @@ class RecipeChatBot:
     def clear_history(self):
         """Clear conversation history."""
         self.conversation_history.clear()
-        print("✅ Conversation history cleared!")
+        print("Conversation history cleared!")
         print()
 
     def format_recipe_response(self, response) -> str:
@@ -96,7 +96,7 @@ class RecipeChatBot:
         # Basic info
         if response.recipe:
             recipe = response.recipe
-            output.append(f"🍽️  **{recipe.name}**")
+            output.append(f"**{recipe.name}**")
             output.append(f"   Cuisine: {recipe.cuisine_type}")
             output.append(f"   Difficulty: {recipe.difficulty}")
             output.append(f"   Spice Level: {recipe.spice_level}")
@@ -106,7 +106,7 @@ class RecipeChatBot:
 
             # Ingredients
             if recipe.ingredients:
-                output.append("🥘 **Ingredients:**")
+                output.append("**Ingredients:**")
                 for ingredient in recipe.ingredients[:8]:  # Show first 8
                     amount_str = (
                         f"{ingredient.amount} {ingredient.unit}"
@@ -122,7 +122,7 @@ class RecipeChatBot:
 
             # Instructions
             if recipe.instructions:
-                output.append("👨‍🍳 **Instructions:**")
+                output.append("**Instructions:**")
                 for i, instruction in enumerate(
                     recipe.instructions[:5], 1
                 ):  # Show first 5
@@ -137,7 +137,7 @@ class RecipeChatBot:
         if response.web_search_results:
             web_results = response.web_search_results
             output.append(
-                f"🔍 **Web Search Results** ({web_results.total_results} found):"
+                f"**Web Search Results** ({web_results.total_results} found):"
             )
             for i, result in enumerate(web_results.search_results[:3], 1):
                 output.append(f"   {i}. {result.title}")
@@ -147,9 +147,9 @@ class RecipeChatBot:
 
         # Confidence and reasoning
         output.append(
-            f"🎯 **Confidence:** {response.confidence.value} ({response.confidence_score:.2f})"
+            f"**Confidence:** {response.confidence.value} ({response.confidence_score:.2f})"
         )
-        output.append(f"💭 **Reasoning:** {response.reasoning}")
+        output.append(f"**Reasoning:** {response.reasoning}")
 
         return "\n".join(output)
 
@@ -171,7 +171,7 @@ class RecipeChatBot:
             formatted_response = self.format_recipe_response(response)
 
             # Add processing time
-            formatted_response += f"\n⏱️  Processed in {processing_time:.2f}s"
+            formatted_response += f"\nProcessed in {processing_time:.2f}s"
 
             # Store in history
             self.conversation_history.append(
@@ -186,7 +186,7 @@ class RecipeChatBot:
             return formatted_response
 
         except Exception as e:
-            return f"❌ Error processing query: {str(e)}"
+            return f"Error processing query: {str(e)}"
 
     def run(self):
         """Run the interactive chat session."""
@@ -195,7 +195,7 @@ class RecipeChatBot:
         while True:
             try:
                 # Get user input
-                user_input = input("🍽️  You: ").strip()
+                user_input = input("You: ").strip()
 
                 if not user_input:
                     continue
@@ -213,23 +213,23 @@ class RecipeChatBot:
                     elif command == "/clear":
                         self.clear_history()
                     elif command in ["/quit", "/exit", "/q"]:
-                        print("👋 Thanks for chatting! Goodbye!")
+                        print("Thanks for chatting! Goodbye!")
                         break
                     else:
-                        print("❌ Unknown command. Type /help for available commands.")
+                        print("Unknown command. Type /help for available commands.")
                     continue
 
                 # Process regular query
-                print("\n🤖 Bot:")
+                print("\nBot:")
                 response = self.process_query(user_input)
                 print(response)
                 print()
 
             except KeyboardInterrupt:
-                print("\n\n👋 Thanks for chatting! Goodbye!")
+                print("\n\nThanks for chatting! Goodbye!")
                 break
             except EOFError:
-                print("\n\n👋 Thanks for chatting! Goodbye!")
+                print("\n\nThanks for chatting! Goodbye!")
                 break
 
 
@@ -239,7 +239,7 @@ def main():
         bot = RecipeChatBot()
         bot.run()
     except Exception as e:
-        print(f"❌ Failed to start chat bot: {e}")
+        print(f"Failed to start chat bot: {e}")
         sys.exit(1)
 
 

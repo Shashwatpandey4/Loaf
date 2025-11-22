@@ -45,3 +45,5 @@ Thumbs.db
 # Temporary files
 *.tmp
 *.temp
+token.json
+credentials.json

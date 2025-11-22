@@ -16,6 +16,7 @@ MODULES = [
     "scripts.create_database",
     "scripts.load_recipes",
     "scripts.add_persona",
+    # "run_weekly_meal_workflow",
 ]
 
 def run_all():
@@ -29,7 +30,7 @@ def query_db(prompt: str):
     agent = Agent(
         name="Recipe Agent",
         model=OpenAIChat(id="gpt-5-nano"),
-        system_message="You are equipped with tools to manage sqlite database",
+        system_message=SYSTEM_PROMPT,
         tools=[SQLTools(db_engine=engine)],
         markdown=True,
         retries=3
@@ -54,19 +55,21 @@ def chat_loop():
     )
     
     print("\n" + "="*50)
-    print("🍞 Recipe Database Chat")
+    print("Recipe Database Chat")
     print("="*50)
     print("Ask questions about the database.")
     print("Type 'exit', 'quit', or 'q' to end.\n")
     
-    while True:
+    count = 0
+    
+    while count<1:
         try:
             # Get user input
             user_input = input("You: ").strip()
             
             # Check for exit commands
             if user_input.lower() in ['exit', 'quit', 'q']:
-                print("\n👋 Goodbye!")
+                print("\nGoodbye!")
                 break
             
             # Skip empty inputs
@@ -90,11 +93,12 @@ def chat_loop():
             print()  # Add spacing after response
             
         except KeyboardInterrupt:
-            print("\n\n👋 Goodbye!")
+            print("\n\nGoodbye!")
             break
         except Exception as e:
-            print(f"\n❌ Error: {e}\n")
+            print(f"\nError: {e}\n")
             continue
+        count += 1
 
 if __name__ == "__main__":
     # Check if --skip-setup flag is provided
@@ -108,3 +112,4 @@ if __name__ == "__main__":
     
     # Start interactive chat
     chat_loop()
+    runpy.run_module("run_weekly_meal_workflow", run_name="__main__")

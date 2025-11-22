@@ -15,7 +15,7 @@ def main():
     """Main CLI function."""
     kb = FullStackKBAnswerer()
 
-    print("🍜 Food KB Answerer")
+    print("Food KB Answerer")
     print("=" * 30)
     print("Enter food queries (type 'quit' to exit, 'help' for commands)")
     print()
@@ -25,7 +25,7 @@ def main():
             query = input("Query: ").strip()
 
             if query.lower() in ["quit", "exit", "q"]:
-                print("Goodbye! 👋")
+                print("Goodbye!")
                 break
 
             if query.lower() == "help":
@@ -50,7 +50,7 @@ def main():
                 continue
 
             if query.lower() == "kb-only":
-                print("🔍 KB-only mode enabled for next query")
+                print("KB-only mode enabled for next query")
                 print()
                 continue
 
@@ -74,7 +74,7 @@ def main():
             # Process the query
             response = kb.answer_query(query, include_web_search=include_web_search)
 
-            print(f"\n🎯 Query: '{query}'")
+            print(f"\nQuery: '{query}'")
             print(
                 f"Confidence: {response.confidence.value} ({response.confidence_score:.2f})"
             )
@@ -84,7 +84,7 @@ def main():
             # Display KB results
             if response.recipe:
                 recipe = response.recipe
-                print(f"\n📖 KB Recipe: {recipe.name}")
+                print(f"\nKB Recipe: {recipe.name}")
                 print(f"   Cuisine: {recipe.cuisine_type}")
                 print(f"   Difficulty: {recipe.difficulty}")
                 print(f"   Spice Level: {recipe.spice_level}")
@@ -102,15 +102,15 @@ def main():
                 for i, instruction in enumerate(recipe.instructions, 1):
                     print(f"   {i}. {instruction}")
 
-                print(f"\n🏷️  Tags: {', '.join(recipe.tags)}")
+                print(f"\nTags: {', '.join(recipe.tags)}")
             else:
-                print("\n❌ No matching recipe found in knowledge base")
+                print("\nNo matching recipe found in knowledge base")
 
             # Display web search results
             if response.web_search_results:
                 web_results = response.web_search_results
                 print(
-                    f"\n🔍 Web Search Results ({web_results.total_results} found, {web_results.search_time_ms}ms):"
+                    f"\nWeb Search Results ({web_results.total_results} found, {web_results.search_time_ms}ms):"
                 )
 
                 for i, result in enumerate(web_results.search_results, 1):
@@ -125,10 +125,10 @@ def main():
             print("\n" + "-" * 60 + "\n")
 
         except KeyboardInterrupt:
-            print("\n\nGoodbye! 👋")
+            print("\n\nGoodbye!")
             break
         except Exception as e:
-            print(f"\n❌ Error: {e}")
+            print(f"\nError: {e}")
             print()
 
 

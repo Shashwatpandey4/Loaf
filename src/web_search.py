@@ -140,7 +140,7 @@ class ExaSearcher:
                     del self.search_cache[oldest_key]
 
         except Exception as e:
-            print(f"⚠️  Exa search error: {e}")
+            print(f"Exa search error: {e}")
             raise
 
         return results

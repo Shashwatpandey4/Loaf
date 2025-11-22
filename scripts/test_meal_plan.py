@@ -69,12 +69,12 @@ def test_mock_meal_plan(mock_meal_plan):
         
         final_check = check_meal_plan_recipes(mock_meal_plan)
         if final_check["Unavailable"]:
-            print("⚠️  Some recipes still unavailable:")
+            print("Some recipes still unavailable:")
             print(json.dumps(final_check["Unavailable"], indent=2))
         else:
-            print("✅ All recipes are now available in the database!")
+            print("All recipes are now available in the database!")
     else:
-        print("\n✅ All recipes are already in the database!")
+        print("\nAll recipes are already in the database!")
     
     # Step 3: Save the meal plan
     print("\n" + "=" * 60)
@@ -84,7 +84,7 @@ def test_mock_meal_plan(mock_meal_plan):
     save_meal_plan_to_file(mock_meal_plan)
     
     print("\n" + "=" * 60)
-    print("✅ Test Complete!")
+    print("Test Complete!")
     print("=" * 60)
 
 
@@ -101,7 +101,7 @@ def test_single_recipe_check():
     
     for recipe_name in test_recipes:
         exists = recipe_exists_in_db(recipe_name)
-        status = "✅ EXISTS" if exists else "❌ NOT FOUND"
+        status = "[EXISTS]" if exists else "[NOT FOUND]"
         print(f"{status}: {recipe_name}")
 
 
