@@ -54,7 +54,7 @@ def chat_loop():
     )
     
     print("\n" + "="*50)
-    print("🍞 Recipe Database Chat")
+    print("Recipe Database Chat")
     print("="*50)
     print("Ask questions about the database.")
     print("Type 'exit', 'quit', or 'q' to end.\n")
@@ -66,7 +66,7 @@ def chat_loop():
             
             # Check for exit commands
             if user_input.lower() in ['exit', 'quit', 'q']:
-                print("\n👋 Goodbye!")
+                print("\nGoodbye!")
                 break
             
             # Skip empty inputs
@@ -90,10 +90,10 @@ def chat_loop():
             print()  # Add spacing after response
             
         except KeyboardInterrupt:
-            print("\n\n👋 Goodbye!")
+            print("\n\nGoodbye!")
             break
         except Exception as e:
-            print(f"\n❌ Error: {e}\n")
+            print(f"\nError: {e}\n")
             continue
 
 if __name__ == "__main__":

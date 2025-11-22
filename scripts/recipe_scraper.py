@@ -162,13 +162,13 @@ def scrape_and_insert_recipe(recipe_name: str) -> bool:
         recipe = scrape_recipe_from_publicdomainrecipes(recipe_name)
         if recipe:
             insert_recipe_to_db(recipe)
-            print(f"✅ Successfully scraped and inserted recipe: {recipe_name}")
+            print(f"Successfully scraped and inserted recipe: {recipe_name}")
             return True
         else:
-            print(f"❌ Failed to scrape recipe: {recipe_name}")
+            print(f"Failed to scrape recipe: {recipe_name}")
             return False
     except Exception as e:
-        print(f"❌ Error scraping recipe {recipe_name}: {e}")
+        print(f"Error scraping recipe {recipe_name}: {e}")
         import traceback
         traceback.print_exc()
         return False

@@ -113,7 +113,7 @@ class FullStackKBAnswerer:
                 and web_search_results.search_results
             ):
                 print(
-                    f"🔍 Extracting recipes from {len(web_search_results.search_results)} URLs..."
+                    f"Extracting recipes from {len(web_search_results.search_results)} URLs..."
                 )
 
                 urls = [result.url for result in web_search_results.search_results]
@@ -126,7 +126,7 @@ class FullStackKBAnswerer:
                     if result.success and result.recipe
                 ]
 
-                print(f"✅ Successfully extracted {len(extracted_recipes)} recipes")
+                print(f"Successfully extracted {len(extracted_recipes)} recipes")
 
         return EnhancedKBResponse(
             query=query,

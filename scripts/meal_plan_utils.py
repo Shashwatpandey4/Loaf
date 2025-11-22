@@ -34,7 +34,7 @@ def scrape_unavailable_recipes(unavailable_recipes: Dict[str, str]) -> Dict[str,
     """
     results = {}
     for day_key, recipe_name in unavailable_recipes.items():
-        print(f"\n🔍 Scraping recipe: {recipe_name} (for {day_key})")
+        print(f"\nScraping recipe: {recipe_name} (for {day_key})")
         success = scrape_and_insert_recipe(recipe_name)
         results[recipe_name] = success
     return results
@@ -55,7 +55,7 @@ def save_meal_plan_to_file(meal_plan: Dict, filename: str = "meal_plan_nested.js
         existing_data = {}
     except json.JSONDecodeError:
         # File exists but is invalid JSON, start fresh
-        print(f"⚠️  Warning: {filename} contains invalid JSON. Starting fresh.")
+        print(f"Warning: {filename} contains invalid JSON. Starting fresh.")
         existing_data = {}
     
     # Add the meal plan under today's date
@@ -65,5 +65,5 @@ def save_meal_plan_to_file(meal_plan: Dict, filename: str = "meal_plan_nested.js
     with open(filename, "w", encoding="utf-8") as f:
         json.dump(existing_data, f, indent=2, ensure_ascii=False)
     
-    print(f"✅ Meal plan saved to {filename} under date {today}")
+    print(f"Meal plan saved to {filename} under date {today}")
 
