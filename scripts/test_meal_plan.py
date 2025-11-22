@@ -4,6 +4,7 @@ Test script for meal plan functionality with a recipe not in the database.
 """
 import os
 import sys
+import ast
 
 # Add parent directory to path for direct execution
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
@@ -17,20 +18,24 @@ from scripts.meal_plan_utils import (
 from scripts.recipe_scraper import recipe_exists_in_db
 
 
-def test_mock_meal_plan():
+def test_mock_meal_plan(mock_meal_plan):
     """Test the meal plan flow with a mock meal plan containing a recipe not in DB."""
     
     # Mock meal plan - using a recipe that's likely not in the database
     # Let's use "Tiramisù" from publicdomainrecipes.com as an example
-    mock_meal_plan = {
-        "day_1": {"recipe": "Spicy Sichuan Noodles", "reason": "High protein, vegetarian option"},
-        "day_2": {"recipe": "Miso Ramen", "reason": "Comfort food, easy to make"},
-        "day_3": {"recipe": "Spicy Pad Thai", "reason": "Flavorful and satisfying"},
-        "day_4": {"recipe": "Creamy Mushroom Pasta", "reason": "Vegetarian comfort food"},
-        "day_5": {"recipe": "Finnish Salmon Soup", "reason": "Good for the winter"},  # This might not be in DB
-        "day_6": {"recipe": "Spicy Thai Green Curry", "reason": "Aromatic and spicy"},
-        "day_7": {"recipe": "Mushroom Crepes with Vegetarian Sauce", "reason": "Brunch-style meal"}
-    }
+    # mock_meal_plan = {
+    #     "day_1": {"recipe": "Spicy Sichuan Noodles", "reason": "High protein, vegetarian option"},
+    #     "day_2": {"recipe": "Miso Ramen", "reason": "Comfort food, easy to make"},
+    #     "day_3": {"recipe": "Spicy Pad Thai", "reason": "Flavorful and satisfying"},
+    #     "day_4": {"recipe": "Creamy Mushroom Pasta", "reason": "Vegetarian comfort food"},
+    #     "day_5": {"recipe": "Finnish Salmon Soup", "reason": "Good for the winter"},  # This might not be in DB
+    #     "day_6": {"recipe": "Spicy Thai Green Curry", "reason": "Aromatic and spicy"},
+    #     "day_7": {"recipe": "Mushroom Crepes with Vegetarian Sauce", "reason": "Brunch-style meal"}
+    # }
+
+    mock_meal_plan = ast.literal_eval(mock_meal_plan)
+
+    # print(mock_meal_plan)
     
     print("=" * 60)
     print("🧪 Testing Meal Plan Flow")
@@ -100,10 +105,10 @@ def test_single_recipe_check():
         print(f"{status}: {recipe_name}")
 
 
-if __name__ == "__main__":
-    # First, test single recipe checks
-    test_single_recipe_check()
+# if __name__ == "__main__":
+#     # First, test single recipe checks
+#     test_single_recipe_check()
     
-    # Then, test the full meal plan flow
-    test_mock_meal_plan()
+#     # Then, test the full meal plan flow
+#     test_mock_meal_plan()
 

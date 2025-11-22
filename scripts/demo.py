@@ -7,6 +7,8 @@ from agno.agent import Agent
 from agno.models.openai import OpenAIChat
 from agno.tools.sql import SQLTools
 from knowledge.prompt import SYSTEM_PROMPT
+from scripts.test_meal_plan import test_mock_meal_plan
+from loguru import logger
 
 load_dotenv()
 
@@ -44,7 +46,7 @@ def chat_loop():
     # Create agent once for the session
     agent = Agent(
         name="Recipe Agent",
-        model=OpenAIChat(id="gpt-5"),
+        model=OpenAIChat(id="gpt-5-nano"),
         system_message=SYSTEM_PROMPT,
         tools=[SQLTools(db_engine=engine)],
         markdown=True,
@@ -73,7 +75,18 @@ def chat_loop():
             
             # Query the database (no history maintained)
             print()  # Add spacing
-            agent.print_response(user_input, stream=False, show_full_reasoning=False)
+            # agent.print_response(user_input, stream=False, show_full_reasoning=False)
+            response = agent.run(
+                user_input,
+                stream=False,
+                show_full_reasoning=False,
+            )
+            answer_text = response.content  # identical string that print_response would show
+            # print(answer_text)
+            # Tharanath's code is from here
+            logger.info("Processing meal plan from agent response...")
+            test_mock_meal_plan(mock_meal_plan=answer_text)
+
             print()  # Add spacing after response
             
         except KeyboardInterrupt:

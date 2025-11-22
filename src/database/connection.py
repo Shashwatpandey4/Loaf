@@ -5,7 +5,7 @@ import os
 
 load_dotenv()
 
-DB_FILE="/Users/anmolgupta/Desktop/Playground/Projects/Loaf/knowledge.db"
+DB_FILE="./knowledge.db"
 
 def get_connection(path: str = DB_FILE) -> sqlite3.Connection:
     conn = sqlite3.connect(path)

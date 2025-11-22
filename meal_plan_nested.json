@@ -1,0 +1,32 @@
+{
+  "2025-11-21": {
+    "Day 1": {
+      "recipe": "Creamy Mushroom Pasta",
+      "reason": "vegetarian"
+    },
+    "Day 2": {
+      "recipe": "Olive Tapenade Flatbread",
+      "reason": "vegetarian"
+    },
+    "Day 3": {
+      "recipe": "Pretzels",
+      "reason": "user-specified recipe"
+    },
+    "Day 4": {
+      "recipe": "Coconut Israeli Couscous Studded With Pomegranate",
+      "reason": "vegetarian"
+    },
+    "Day 5": {
+      "recipe": "Broccoli Cheddar Soup, A Panera Bread Co. Copycat",
+      "reason": "vegetarian"
+    },
+    "Day 6": {
+      "recipe": "Tapioca Pudding with Pineapple and Coconut",
+      "reason": "vegetarian"
+    },
+    "Day 7": {
+      "recipe": "Roasted Beet Hummus",
+      "reason": "vegetarian"
+    }
+  }
+}
