@@ -43,7 +43,8 @@ def scrape_unavailable_recipes(unavailable_recipes: Dict[str, str]) -> Dict[str,
 def save_meal_plan_to_file(meal_plan: Dict, filename: str = "meal_plan_nested.json"):
     """Save meal plan to a JSON file with date as parent key."""
     # Get today's date in YYYY-MM-DD format
-    today = datetime.now().strftime("%Y-%m-%d")
+    # today = datetime.now().strftime("%Y-%m-%d")
+    today = "2025-11-24"
     
     # Load existing data if file exists
     existing_data = {}
