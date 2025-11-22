@@ -119,3 +119,8 @@ watchfiles==1.1.1
 webencodings==0.5.1
 websockets==15.0.1
 
+#weekly meal plan workflow
+requests>=2.25.0
+stripe>=5.0.0
+reportlab>=4.0.0
+python-dotenv>=1.0.0
