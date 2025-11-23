@@ -34,7 +34,7 @@ os.environ["EXA_API_KEY"] = exa_api_key
 # --- CONFIGURATION ---
 MEAL_PLAN_FILE = Path("meal_plan_nested.json")
 GROCERY_LIST_FILE = Path("output_examples/grocery_list.json")
-TIMEZONE = "America/Los_Angeles"
+TIMEZONE = "America/Phoenix"
 CALENDAR_ID = "primary"
 
 STANDARD_GROCERY_UNITS = {
@@ -82,7 +82,16 @@ STANDARD_GROCERY_UNITS = {
         "chickpeas": ("1 can (15 oz / 425 g)", 1.79),
         "ground cumin": ("1 jar (40 g)", 2.58),
         "juice of lemon": ("1 lemon", 0.79),
-        "tahini sesame seed paste": ("1 jar (454 g / 16 oz)", 5.49)
+        "tahini sesame seed paste": ("1 jar (454 g / 16 oz)", 5.49),
+        "granulated sugar": ("1 bag (4 lb / 1.8 kg)", 2.49),               
+        "mascarpone": ("1 tub (8 oz / 227 g)", 5.49),
+        "espresso": ("1 bottle instant espresso (100 g)", 4.99),
+        "coffee": ("1 bag (12 oz / 340 g)", 6.99),                         
+        "rum": ("1 bottle (750 mL)", 12.99),
+        "cognac": ("1 bottle (750 mL)", 34.99),                            
+        "unsweetened cocoa powder": ("1 container (8 oz / 226 g)", 4.49),
+        "ladyfingers": ("1 package (7 oz / 200 g)", 4.49),
+        "bittersweet chocolate": ("1 bar (3.5 oz / 100 g)", 3.99)
     }
 # --- HELPER FUNCTIONS ---
 def generate_grocery_list(meal_plan_file: Path, kb: FullStackKBAnswerer):
@@ -124,7 +133,7 @@ def generate_grocery_list(meal_plan_file: Path, kb: FullStackKBAnswerer):
         )
 
         if not recipe:
-            print(f"Recipe '{recipe_name}' not found in KB, attempting web search...")
+            print(f"⚠️ Recipe '{recipe_name}' not found in KB, attempting web search...")
             search_results = web_searcher.find_recipe_candidates(recipe_name)
 
             if search_results.success and search_results.search_results:
@@ -133,7 +142,7 @@ def generate_grocery_list(meal_plan_file: Path, kb: FullStackKBAnswerer):
                 recipe = extraction_result.recipe if extraction_result.success else None
 
             if not recipe or not hasattr(recipe, "ingredients"):
-                print(f"Could not extract recipe for '{recipe_name}', skipping")
+                print(f"❌ Could not extract recipe for '{recipe_name}', skipping")
                 continue
 
         # Aggregate ingredients using shopping-friendly units
@@ -151,20 +160,16 @@ def generate_grocery_list(meal_plan_file: Path, kb: FullStackKBAnswerer):
     with open(GROCERY_LIST_FILE, "w") as f:
         json.dump(grocery_list, f, indent=2)
 
-    print(f"Grocery list saved to {GROCERY_LIST_FILE}")
+    print(f"✅ Grocery list saved to {GROCERY_LIST_FILE}")
     return grocery_list
 
 def schedule_meal_plan(meal_plan_file: Path, kb: FullStackKBAnswerer):
     """Create calendar events for meals and grocery ordering."""
     creds = get_credentials()
-    today = datetime.now()
-    start_of_week = today - timedelta(days=today.weekday())  # Monday as start
-    # Adjust to Sunday-Saturday week
-    start_of_week = start_of_week - timedelta(days=1)
-
     with open(meal_plan_file, "r") as f:
         meal_plan = json.load(f)
-    
+    week_start_str = next(iter(meal_plan.keys()))
+    week_start_date = datetime.strptime(week_start_str, "%Y-%m-%d")
     first_key = next(iter(meal_plan))
     if isinstance(meal_plan[first_key], dict) and "recipe" not in meal_plan[first_key]:
         meal_plan = meal_plan[first_key]
@@ -173,7 +178,7 @@ def schedule_meal_plan(meal_plan_file: Path, kb: FullStackKBAnswerer):
         recipe_name = details["recipe"]
 
         # Schedule meal at 6:00 PM by default
-        meal_time = start_of_week + timedelta(days=i, hours=18)
+        meal_time = week_start_date + timedelta(days=i, hours=18)
         create_event_from_details(
             credentials=creds,
             title=f"{recipe_name} (Meal)",
@@ -184,10 +189,10 @@ def schedule_meal_plan(meal_plan_file: Path, kb: FullStackKBAnswerer):
             description=details.get("reason", ""),
         )
 
-        print(f"Scheduled {recipe_name} for {meal_time.strftime('%A %b %d %H:%M')}")
+        print(f"📅 Scheduled {recipe_name} for {meal_time.strftime('%A %b %d %H:%M')}")
 
     # Schedule grocery order on Saturday (day before cooking starts on Sunday)
-    grocery_order_time = start_of_week + timedelta(days=6, hours=10)
+    grocery_order_time = week_start_date + timedelta(days=6, hours=10)
     create_event_from_details(
         credentials=creds,
         title="Grocery Order",
@@ -197,7 +202,7 @@ def schedule_meal_plan(meal_plan_file: Path, kb: FullStackKBAnswerer):
         calendar_id=CALENDAR_ID,
         description="Order all groceries for the upcoming week's meals",
     )
-    print(f"Scheduled grocery order for {grocery_order_time.strftime('%A %b %d %H:%M')}")
+    print(f"🛒 Scheduled grocery order for {grocery_order_time.strftime('%A %b %d %H:%M')}")
 
 def schedule_logistics(grocery_list):
     try:
@@ -211,13 +216,13 @@ def schedule_logistics(grocery_list):
             # Save ETA to a file
             with open("output_examples/grocery_delivery_status.json", "w") as f:
                 json.dump(data, f, indent=2)
-            print(f"Grocery delivery scheduled! ETA: {data['eta']}")
+            print(f"🚚 Grocery delivery scheduled! ETA: {data['eta']}")
             return True
         else:
-            print("Failed to schedule delivery")
+            print("⚠️ Failed to schedule delivery")
             return False
     except Exception as e:
-        print(f"Logistics API error: {e}")
+        print(f"❌ Logistics API error: {e}")
         return False
     
 def trigger_stripe_payment(grocery_list):
@@ -255,7 +260,7 @@ def trigger_stripe_payment(grocery_list):
         "items": prices
     }
 
-    print(f"Payment completed: ${total_amount:.2f}, status: {payment_record['status']}")
+    print(f"💳 Payment completed: ${total_amount:.2f}, status: {payment_record['status']}")
 
     return payment_record
 
@@ -352,25 +357,25 @@ def generate_pdf_logistics_payment(logistics_file, payment_record):
     c.drawString(50, y-40, "Thank you for using our weekly grocery service!")
 
     c.save()
-    print(f"Receipt PDF generated: {PDF_FILE}")
+    print(f"✅ Receipt PDF generated: {PDF_FILE}")
 
 def main():
     """Run the full workflow."""
     kb = FullStackKBAnswerer()
     
-    # 1. Generate grocery list
+    # 1️⃣ Generate grocery list
     grocery_list = generate_grocery_list(MEAL_PLAN_FILE, kb)
 
-    # 2. Schedule meal plan and grocery order
+    # 2️⃣ Schedule meal plan and grocery order
     schedule_meal_plan(MEAL_PLAN_FILE, kb)
 
-    # 3. Schedule logistics
+    # 3️⃣ Schedule logistics
     schedule_logistics(grocery_list)
-    # 4. Trigger payment
+    # 4️⃣ Trigger payment
     payment_record = trigger_stripe_payment(grocery_list)
-    # 5. Generate PDF summary
+    # 5️⃣ Generate PDF summary
     generate_pdf_logistics_payment("output_examples/grocery_delivery_status.json", payment_record)
-    print("Weekly meal workflow completed successfully!")
+    print("🎉 Weekly meal workflow completed successfully!")
 
 
 if __name__ == "__main__":
