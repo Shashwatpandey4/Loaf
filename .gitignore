@@ -47,3 +47,7 @@ Thumbs.db
 *.temp
 token.json
 credentials.json
+
+# Added to hide files that I was adding via WSL
+*Zone.Identifier
+*.Zone.Identifier
