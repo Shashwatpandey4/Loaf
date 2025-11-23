@@ -135,11 +135,11 @@ async def chat(request: ChatRequest):
         test_mock_meal_plan(mock_meal_plan=answer_text)
 
         # Optionally run the full workflow
-        if request.run_workflow:
-            logger.info("Running full weekly meal workflow...")
-            import runpy
+        # if request.run_workflow:
+        logger.info("Running full weekly meal workflow...")
+        import runpy
 
-            runpy.run_module("run_weekly_meal_workflow", run_name="__main__")
+        runpy.run_module("run_weekly_meal_workflow", run_name="__main__")
 
         return ChatResponse(
             meal_plan=meal_plan,
