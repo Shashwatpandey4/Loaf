@@ -7,37 +7,12 @@ const chatMessages = document.getElementById('chat-messages');
 const helpButton = document.getElementById('help-button');
 const userName = document.getElementById('user-name');
 
-// Hardcoded meal plan data (1 meal per day)
-const hardcodedMealPlan = [
-    {
-        day: "Monday",
-        meal: "Avocado Toast with Poached Eggs"
-    },
-    {
-        day: "Tuesday",
-        meal: "Greek Yogurt Parfait"
-    },
-    {
-        day: "Wednesday",
-        meal: "Overnight Oats"
-    },
-    {
-        day: "Thursday",
-        meal: "Scrambled Eggs with Spinach"
-    },
-    {
-        day: "Friday",
-        meal: "Smoothie Bowl"
-    },
-    {
-        day: "Saturday",
-        meal: "Pancakes with Maple Syrup"
-    },
-    {
-        day: "Sunday",
-        meal: "French Toast"
-    }
-];
+// API configuration
+const API_BASE_URL = 'http://localhost:8000';
+
+// Day mapping for converting API response to display format
+const DAY_ORDER = ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5', 'Day 6', 'Day 7'];
+const DAY_NAMES = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
 // Initialize chat
 function init() {
@@ -73,6 +48,7 @@ function addChatMessage(message, isUser = false, isHTML = false) {
     
     chatMessages.appendChild(messageDiv);
     scrollChatToBottom();
+    return messageDiv; // Return the element so it can be removed if needed
 }
 
 // Scroll chat to bottom
@@ -80,9 +56,66 @@ function scrollChatToBottom() {
     chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
+// Convert API meal plan format to display format
+function convertMealPlanFormat(mealPlan) {
+    const converted = [];
+    
+    // Handle nested format (e.g., {"2025-11-20": {"day_1": {...}}})
+    let actualPlan = mealPlan;
+    if (typeof mealPlan === 'object' && mealPlan !== null) {
+        // Check if it's nested with a date key
+        const keys = Object.keys(mealPlan);
+        if (keys.length > 0 && typeof mealPlan[keys[0]] === 'object' && mealPlan[keys[0]] !== null) {
+            // Check if the nested object has day_1, day_2, etc.
+            const nestedKeys = Object.keys(mealPlan[keys[0]]);
+            if (nestedKeys.some(k => k.startsWith('day_'))) {
+                actualPlan = mealPlan[keys[0]];
+            }
+        }
+    }
+    
+    // Handle different possible formats from the API
+    for (let i = 0; i < DAY_ORDER.length; i++) {
+        const dayKey = DAY_ORDER[i];
+        const dayName = DAY_NAMES[i];
+        const altKey = `day_${i + 1}`;
+        
+        let dayData = null;
+        
+        // Try "Day 1", "Day 2", etc.
+        if (actualPlan[dayKey]) {
+            dayData = actualPlan[dayKey];
+        }
+        // Try "day_1", "day_2", etc.
+        else if (actualPlan[altKey]) {
+            dayData = actualPlan[altKey];
+        }
+        
+        if (dayData) {
+            converted.push({
+                day: dayName,
+                meal: dayData.recipe || dayData.meal || 'Meal',
+                reason: dayData.reason || ''
+            });
+        } else {
+            // If we can't find the day, add a placeholder
+            converted.push({
+                day: dayName,
+                meal: 'Meal TBD',
+                reason: ''
+            });
+        }
+    }
+    
+    return converted;
+}
+
 // Render meal plan as chat message with transitions
-async function renderMealPlanAsMessage() {
+async function renderMealPlanAsMessage(mealPlanData) {
     const savedName = localStorage.getItem('loaf_userName') || 'User';
+    
+    // Convert meal plan to display format
+    const mealPlan = convertMealPlanFormat(mealPlanData);
     
     // Create the meal plan message container
     const messageDiv = document.createElement('div');
@@ -120,15 +153,15 @@ async function renderMealPlanAsMessage() {
     const mealPlanContent = messageDiv.querySelector('.meal-plan-content');
     
     // Add days one by one with delay
-    for (let i = 0; i < hardcodedMealPlan.length; i++) {
+    for (let i = 0; i < mealPlan.length; i++) {
         await new Promise(resolve => setTimeout(resolve, 300)); // 300ms delay between each day
         
         const dayMealItem = document.createElement('div');
         dayMealItem.className = 'day-meal-item day-meal-item-enter';
         dayMealItem.innerHTML = `
-            <span class="day-name">${hardcodedMealPlan[i].day}</span>
+            <span class="day-name">${mealPlan[i].day}</span>
             <span class="meal-separator">:</span>
-            <span class="meal-name">${hardcodedMealPlan[i].meal}</span>
+            <span class="meal-name">${mealPlan[i].meal}</span>
         `;
         mealPlanContent.appendChild(dayMealItem);
         scrollChatToBottom();
@@ -204,22 +237,96 @@ async function handleSend() {
     userInput.disabled = true;
     sendButton.disabled = true;
     
-    // Wait a moment, then show bot response
+    // Show loading message
     await new Promise(resolve => setTimeout(resolve, 500));
+    const loadingMessage = addChatMessage("Thinking...", false);
     
-    // Add bot response message
-    addChatMessage("I'll create a personalized meal plan for you!");
-    
-    // Wait a bit more, then show meal plan in chat (with delay)
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    // Show meal plan as a chat message with transitions
-    await renderMealPlanAsMessage();
-    
-    // Re-enable input
-    userInput.disabled = false;
-    sendButton.disabled = false;
-    userInput.focus();
+    try {
+        // Call the API to get the meal plan
+        console.log('Calling API:', `${API_BASE_URL}/chat`);
+        const response = await fetch(`${API_BASE_URL}/chat`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                message: message,
+                run_workflow: false  // Set to true if you want to run the full workflow
+            })
+        });
+        
+        // Remove loading message
+        if (loadingMessage && loadingMessage.parentNode) {
+            loadingMessage.parentNode.removeChild(loadingMessage);
+        }
+        
+        if (!response.ok) {
+            let errorMessage = `API error: ${response.status} ${response.statusText}`;
+            try {
+                const errorData = await response.json();
+                errorMessage = errorData.detail || errorData.message || errorMessage;
+            } catch (e) {
+                // If we can't parse the error, use the status text
+            }
+            throw new Error(errorMessage);
+        }
+        
+        const data = await response.json();
+        console.log('API Response:', data);
+        
+        if (data.success && data.meal_plan) {
+            // Show the chatbot's message if available, otherwise use a default
+            const botMessage = data.message || "I've created a personalized meal plan for you!";
+            addChatMessage(botMessage);
+            
+            // If there's a raw_response with additional text, show it
+            if (data.raw_response && data.raw_response.trim()) {
+                // Try to extract any text before/after the JSON
+                const jsonMatch = data.raw_response.match(/\{.*\}/s);
+                if (jsonMatch) {
+                    const beforeJson = data.raw_response.substring(0, jsonMatch.index).trim();
+                    const afterJson = data.raw_response.substring(jsonMatch.index + jsonMatch[0].length).trim();
+                    
+                    if (beforeJson) {
+                        addChatMessage(beforeJson);
+                    }
+                    if (afterJson) {
+                        addChatMessage(afterJson);
+                    }
+                } else {
+                    // If no JSON found, show the raw response
+                    addChatMessage(data.raw_response);
+                }
+            }
+            
+            // Wait a bit, then show meal plan in chat (with delay)
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
+            // Show meal plan as a chat message with transitions
+            await renderMealPlanAsMessage(data.meal_plan);
+        } else {
+            throw new Error(data.message || 'Failed to get meal plan from API');
+        }
+    } catch (error) {
+        console.error('Error calling API:', error);
+        // Remove loading message if it still exists
+        if (loadingMessage && loadingMessage.parentNode) {
+            loadingMessage.parentNode.removeChild(loadingMessage);
+        }
+        
+        // Provide helpful error messages
+        let errorMsg = error.message;
+        if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
+            errorMsg = 'Cannot connect to the API server. Please make sure the API server is running on port 8000. Run: ./run_server.sh';
+        }
+        
+        addChatMessage(`Sorry, I encountered an error: ${errorMsg}`);
+    } finally {
+        // Re-enable input
+        userInput.disabled = false;
+        sendButton.disabled = false;
+        userInput.focus();
+    }
 }
 
 
