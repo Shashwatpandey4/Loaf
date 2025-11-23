@@ -16,6 +16,7 @@ from pathlib import Path
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 import os
+from loguru import logger
 
 from src.fullstack_kb_answerer import FullStackKBAnswerer
 
@@ -176,7 +177,22 @@ def schedule_meal_plan(meal_plan_file: Path, kb: FullStackKBAnswerer):
 
     for i, (day, details) in enumerate(meal_plan.items()):
         recipe_name = details["recipe"]
-
+        #------ Add description to the event------
+        recipe = next(
+            (r for r in kb.get_available_recipes() if r.name.lower() == recipe_name.lower()),
+            None,
+        )
+        
+        description = ""
+        
+        logger.debug(f"Recipe: {recipe}")
+        
+        if recipe:
+        
+            for instruction in recipe.instructions:
+                description += instruction + "\n"
+        
+        #------ ----------------------------------
         # Schedule meal at 6:00 PM by default
         meal_time = week_start_date + timedelta(days=i, hours=18)
         create_event_from_details(
@@ -186,7 +202,7 @@ def schedule_meal_plan(meal_plan_file: Path, kb: FullStackKBAnswerer):
             duration_minutes=60,
             timezone=TIMEZONE,
             calendar_id=CALENDAR_ID,
-            description=details.get("reason", ""),
+            description=description,
         )
 
         print(f"📅 Scheduled {recipe_name} for {meal_time.strftime('%A %b %d %H:%M')}")

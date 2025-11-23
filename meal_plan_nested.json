@@ -1,32 +1,32 @@
 {
   "2025-11-24": {
     "Day 1": {
-      "recipe": "Olive Tapenade Flatbread",
-      "reason": "vegetarian and heart-healthy option for high blood pressure"
+      "recipe": "Spicy Sichuan Noodles",
+      "reason": "non-vegetarian option with bold spicy Chinese flavors"
     },
     "Day 2": {
-      "recipe": "Coconut Israeli Couscous Studded With Pomegranate",
-      "reason": "vegetarian and balanced meal"
+      "recipe": "Pretzels",
+      "reason": "user-specified recipe"
     },
     "Day 3": {
-      "recipe": "Dosa",
-      "reason": "user-specified recipe"
+      "recipe": "Creamy Mushroom Pasta",
+      "reason": "vegetarian-friendly creamy pasta"
     },
     "Day 4": {
       "recipe": "Honey Dijon Roasted Brussels Sprout",
-      "reason": "vegetarian and low fat"
+      "reason": "vegetarian main/side with balanced flavors"
     },
     "Day 5": {
-      "recipe": "Maple-Glazed Apple Cookies",
-      "reason": "vegetarian dessert"
+      "recipe": "Cheesy Spinach Stuffed Shells",
+      "reason": "vegetarian main with cheese and spinach"
     },
     "Day 6": {
-      "recipe": "Easy Chewy M&M Cookies",
-      "reason": "vegetarian dessert"
+      "recipe": "Classic Greek Moussaka",
+      "reason": "Mediterranean main dish with layered flavors"
     },
     "Day 7": {
-      "recipe": "Mushroom Crepes with Vegetarian Sauce",
-      "reason": "vegetarian"
+      "recipe": "Spicy Pad Thai",
+      "reason": "Thai noodle dish with a spicy kick"
     }
   }
 }
