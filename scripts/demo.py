@@ -107,9 +107,10 @@ if __name__ == "__main__":
     if not skip_setup:
         # First, run all setup steps
         run_all()
+        logger.info("Setup completed: Database created and recipes and Persona loaded")
     else:
         print("\n=== Skipping setup (using existing database) ===")
     
     # Start interactive chat
-    chat_loop()
-    runpy.run_module("run_weekly_meal_workflow", run_name="__main__")
+    # chat_loop()
+    # runpy.run_module("run_weekly_meal_workflow", run_name="__main__")

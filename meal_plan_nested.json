@@ -1,32 +1,32 @@
 {
   "2025-11-24": {
     "Day 1": {
-      "recipe": "Spicy Sichuan Noodles",
-      "reason": "non-vegetarian option with bold spicy Chinese flavors"
+      "recipe": "Creamy Mushroom Pasta",
+      "reason": "vegetarian"
     },
     "Day 2": {
+      "recipe": "Cheesy Spinach Stuffed Shells",
+      "reason": "vegetarian"
+    },
+    "Day 3": {
       "recipe": "Pretzels",
       "reason": "user-specified recipe"
     },
-    "Day 3": {
-      "recipe": "Creamy Mushroom Pasta",
-      "reason": "vegetarian-friendly creamy pasta"
-    },
     "Day 4": {
-      "recipe": "Honey Dijon Roasted Brussels Sprout",
-      "reason": "vegetarian main/side with balanced flavors"
+      "recipe": "Coconut Israeli Couscous Studded With Pomegranate",
+      "reason": "vegetarian"
     },
     "Day 5": {
-      "recipe": "Cheesy Spinach Stuffed Shells",
-      "reason": "vegetarian main with cheese and spinach"
+      "recipe": "Roasted Beet Hummus",
+      "reason": "vegetarian"
     },
     "Day 6": {
-      "recipe": "Classic Greek Moussaka",
-      "reason": "Mediterranean main dish with layered flavors"
+      "recipe": "Broccoli Cheddar Soup, A Panera Bread Co. Copycat",
+      "reason": "vegetarian"
     },
     "Day 7": {
-      "recipe": "Spicy Pad Thai",
-      "reason": "Thai noodle dish with a spicy kick"
+      "recipe": "Mushroom Crepes with Vegetarian Sauce",
+      "reason": "vegetarian"
     }
   }
 }

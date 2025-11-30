@@ -185,7 +185,7 @@ def schedule_meal_plan(meal_plan_file: Path, kb: FullStackKBAnswerer):
         
         description = ""
         
-        logger.debug(f"Recipe: {recipe}")
+        # logger.debug(f"Recipe: {recipe}")
         
         if recipe:
         
