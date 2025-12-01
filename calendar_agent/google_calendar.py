@@ -11,7 +11,7 @@ try:
     from googleapiclient.discovery import build
 except Exception:
     raise ImportError(
-        "Missing Google libraries. Install from `requirements-calendar.txt` or run: `pip install google-api-python-client google-auth-httplib2 google-auth-oauthlib`")
+        "Missing Google libraries. Install from `requirements.txt` or run: `pip install google-api-python-client google-auth-httplib2 google-auth-oauthlib`")
 
 SCOPES = ["https://www.googleapis.com/auth/calendar.events"]
 

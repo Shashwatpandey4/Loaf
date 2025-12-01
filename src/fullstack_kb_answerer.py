@@ -3,6 +3,8 @@ Enhanced KB answerer with recipe detection integration.
 """
 
 from typing import Tuple
+from datetime import datetime, timedelta
+from collections import defaultdict
 
 from src.models.contracts import ConfidenceLevel, EnhancedKBResponse, QueryAnalysis, Recipe
 from src.query_processor import QueryProcessor, RecipeMatcher
@@ -143,6 +145,87 @@ class FullStackKBAnswerer:
         """Get all available recipes in the knowledge base."""
         return self.recipe_matcher.recipes
 
+    def schedule_meal_plan(
+        self,
+        plan: dict,
+        recipes_map: dict,
+        start_date: datetime,
+        time_str: str = "18:00",
+        credentials_path: str = "credentials.json",
+        token_path: str = "token.json",
+        timezone: str = "UTC",
+        dry_run: bool = False,
+    ) -> list[str]:
+        """Schedule a 7-day meal plan to Google Calendar and return event links.
+
+        This method requires the `calendar_agent` package and Google API
+        dependencies installed. It will raise a RuntimeError if calendar
+        integration is not available.
+        """
+        try:
+            from calendar_agent.google_calendar import get_credentials, create_event_from_details
+        except Exception as e:
+            raise RuntimeError("Calendar integration not available: " + str(e))
+
+        hour, minute = map(int, time_str.split(":"))
+
+        if dry_run:
+            # Build event payloads but do not call Google APIs
+            events: list[dict] = []
+            for i in range(7):
+                day_key = f"day_{i+1}"
+                recipe_name = plan.get(day_key)
+                recipe = recipes_map.get(recipe_name)
+
+                start_dt = datetime.fromisoformat(start_date.isoformat() if isinstance(start_date, datetime) else start_date)
+                start_dt = start_dt.replace(hour=hour, minute=minute) + timedelta(days=i)
+                end_dt = start_dt + timedelta(minutes=(int(str(getattr(recipe, "prep_time", "0")).split()[0]) if recipe and getattr(recipe, "prep_time", None) else 60))
+
+                description = getattr(recipe, "description", "") if recipe else ""
+
+                event = {
+                    "summary": f"Meal: {recipe_name}",
+                    "description": description,
+                    "start": {"dateTime": start_dt.isoformat(), "timeZone": timezone},
+                    "end": {"dateTime": end_dt.isoformat(), "timeZone": timezone},
+                }
+                events.append(event)
+
+            return events
+
+        creds = get_credentials(client_secrets_file=credentials_path, token_file=token_path)
+
+        created_links: list[str] = []
+        for i in range(7):
+            day_key = f"day_{i+1}"
+            recipe_name = plan.get(day_key)
+            recipe = recipes_map.get(recipe_name)
+
+            start_dt = datetime.fromisoformat(start_date.isoformat() if isinstance(start_date, datetime) else start_date)
+            start_dt = start_dt.replace(hour=hour, minute=minute) + timedelta(days=i)
+
+            description = ""
+            duration = 60
+            if recipe:
+                description = getattr(recipe, "description", "") or ""
+                try:
+                    duration = int(str(getattr(recipe, "prep_time", "0")).split()[0]) + int(str(getattr(recipe, "cook_time", "0")).split()[0])
+                except Exception:
+                    duration = 60
+
+            created = create_event_from_details(
+                credentials=creds,
+                title=f"Meal: {recipe_name}",
+                start_dt=start_dt,
+                duration_minutes=duration,
+                description=description,
+                timezone=timezone,
+            )
+
+            created_links.append(created.get("htmlLink"))
+
+        return created_links
+
     def search_by_tags(self, tags: list[str]) -> list[Recipe]:
         """Search recipes by specific tags."""
         matching_recipes = []
@@ -156,3 +239,91 @@ class FullStackKBAnswerer:
     def extract_recipe_from_url(self, url: str):
         """Extract recipe from a specific URL."""
         return self.recipe_detector.extract_recipe(url)
+
+    def schedule_grocery_event(
+        self,
+        plan: dict,
+        recipes_map: dict,
+        grocery_date: datetime,
+        time_str: str = "10:00",
+        credentials_path: str = "credentials.json",
+        token_path: str = "token.json",
+        timezone: str = "UTC",
+        dry_run: bool = False,
+    ) -> list[str] | dict:
+        """Aggregate groceries from the 7-day plan and create a calendar event.
+
+        Returns event payloads in dry-run mode or created event links when not.
+        """
+        # Aggregate ingredients
+        agg: dict[str, list[tuple[str, str]]] = defaultdict(list)
+        for day_key in [f"day_{i+1}" for i in range(7)]:
+            recipe_name = plan.get(day_key)
+            recipe = recipes_map.get(recipe_name)
+            if not recipe:
+                continue
+            for ing in getattr(recipe, "ingredients", []):
+                name = ing.name.strip()
+                amount = ing.amount if getattr(ing, "amount", None) is not None else ""
+                unit = ing.unit if getattr(ing, "unit", None) else ""
+                agg[name].append((str(amount), str(unit)))
+
+        # Build grocery lines, try to sum simple numeric amounts with same unit
+        def try_sum(entries: list[tuple[str, str]]) -> str:
+            # Group by unit
+            grouped: dict[str, list[float]] = defaultdict(list)
+            others: list[str] = []
+            for amt, unit in entries:
+                try:
+                    val = float(str(amt))
+                    grouped[unit].append(val)
+                except Exception:
+                    others.append(f"{amt} {unit}".strip())
+
+            parts: list[str] = []
+            for unit, vals in grouped.items():
+                total = sum(vals)
+                parts.append(f"{total:g} {unit}".strip())
+            parts.extend(others)
+            return "; ".join(parts) if parts else ""
+
+        grocery_lines: list[str] = []
+        for name, entries in agg.items():
+            amt_str = try_sum(entries)
+            if amt_str:
+                grocery_lines.append(f"- {amt_str} {name}")
+            else:
+                grocery_lines.append(f"- {name}")
+
+        description = "Grocery list for 7-day meal plan:\n\n" + "\n".join(grocery_lines)
+
+        hour, minute = map(int, time_str.split(":"))
+        start_dt = datetime.fromisoformat(grocery_date.isoformat() if isinstance(grocery_date, datetime) else grocery_date)
+        start_dt = start_dt.replace(hour=hour, minute=minute)
+
+        if dry_run:
+            event = {
+                "summary": "Grocery list: Weekly meal plan",
+                "description": description,
+                "start": {"dateTime": start_dt.isoformat(), "timeZone": timezone},
+                "end": {"dateTime": (start_dt + timedelta(minutes=30)).isoformat(), "timeZone": timezone},
+            }
+            return event
+
+        try:
+            from calendar_agent.google_calendar import get_credentials, create_event_from_details
+        except Exception as e:
+            raise RuntimeError("Calendar integration not available: " + str(e))
+
+        creds = get_credentials(client_secrets_file=credentials_path, token_file=token_path)
+
+        created = create_event_from_details(
+            credentials=creds,
+            title="Grocery list: Weekly meal plan",
+            start_dt=start_dt,
+            duration_minutes=30,
+            description=description,
+            timezone=timezone,
+        )
+
+        return [created.get("htmlLink")]
